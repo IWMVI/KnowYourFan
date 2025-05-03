@@ -22,42 +22,40 @@ public class FanController {
             @RequestParam("cpf") String cpf,
             @RequestParam("endereco") String endereco,
             @RequestParam("interesses") String interesses,
-            @RequestParam(value = "documento", required = false) MultipartFile documento) {
-
-        // Verificação de campos obrigatórios
-        if (nome == null || nome.isEmpty() ||
-                cpf == null || cpf.isEmpty() ||
-                interesses == null || interesses.isEmpty()) {
-            return ResponseEntity.badRequest().body("Campos obrigatórios ausentes.");
-        }
-
-        // Criando o objeto Fan a partir dos dados recebidos
+            @RequestParam(value = "documento", required = false) MultipartFile documento,
+            @RequestParam(value = "linksEsports", required = false) List<String> linksEsports) {
         Fan fan = new Fan();
         fan.setNome(nome);
         fan.setCpf(cpf);
         fan.setEndereco(endereco);
         fan.setInteresses(interesses);
 
-        // Processando o documento (se houver)
         if (documento != null && !documento.isEmpty()) {
             try {
-                // Salve o arquivo no local desejado (ou manipule como necessário)
-                String documentoPath = "caminho/do/arquivo"; // Ajuste conforme a necessidade de salvar o arquivo
-                fan.setDocumentoPath(documentoPath); // Atribuindo o caminho do documento
+                String documentoPath = "caminho/do/arquivo";
+                fan.setDocumentoPath(documentoPath);
             } catch (Exception e) {
                 return ResponseEntity.status(500).body("Erro ao processar o documento: " + e.getMessage());
             }
         }
 
-        // Salvando o fã no banco de dados
-        repository.save(fan);
+        // Validação simulada com IA para links de e-sports
+        if (linksEsports != null) {
+            fan.setLinksEsports(linksEsports);
+            boolean algumLinkValido = linksEsports.stream().anyMatch(this::linkEhValido);
+            if (!algumLinkValido) {
+                return ResponseEntity.badRequest().body("Nenhum link de e-sports válido foi fornecido.");
+            }
+        }
 
-        // Retornando resposta de sucesso
+        repository.save(fan);
         return ResponseEntity.ok("Fã cadastrado(a) com sucesso!");
     }
 
+    private boolean linkEhValido(String url) {
+        return url.contains("steam") || url.contains("faceit") || url.contains("hltv");
+    }
 
-    // Método para listar todos os fãs cadastrados
     @GetMapping
     public ResponseEntity<List<Fan>> listarTodos() {
         return ResponseEntity.ok(repository.findAll());

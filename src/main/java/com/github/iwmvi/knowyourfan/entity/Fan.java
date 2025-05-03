@@ -20,7 +20,12 @@ public class Fan {
     private String documentoPath;
 
     @ElementCollection
-    @Column(name = "rede_social")
     @CollectionTable(name = "fan_redes_sociais", joinColumns = @JoinColumn(name = "fan_id"))
+    @Column(name = "rede_social")
     private List<String> redesSociais;
+
+    @ElementCollection
+    @CollectionTable(name = "fan_links_esports", joinColumns = @JoinColumn(name = "fan_id"))
+    @Column(name = "link")
+    private List<String> linksEsports;
 }
