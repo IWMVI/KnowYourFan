@@ -1,0 +1,166 @@
+/* Estilo Básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+}
+
+a {
+    text-decoration: none;
+    color: #fff;
+}
+
+/* Cabeçalho */
+header {
+    background: #111;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+}
+
+nav ul {
+    list-style-type: none;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 15px;
+}
+
+#banner {
+    background: url('https://upload.wikimedia.org/wikipedia/pt/f/f9/Furia_Esports_logo.png') no-repeat center center;
+    padding: 60px 0;
+    color: #fff;
+    text-align: center;
+    height: 400px;
+    background-size: contain;
+    background-position: center;
+    position: relative;
+}
+
+#banner .banner-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+#banner h1 {
+    font-size: 3em;
+    margin-bottom: 20px;
+}
+
+#banner p {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+}
+
+#banner .btn {
+    background-color: #ffcc00;
+    padding: 10px 20px;
+    border-radius: 5px;
+    color: #111;
+    font-size: 1.1em;
+}
+
+/* Seção de Informações */
+#info {
+    padding: 40px 10%;
+    background: #f4f4f4;
+    text-align: center;
+}
+
+#info h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+#info p {
+    font-size: 1.1em;
+    margin-bottom: 20px;
+}
+
+/* Formulário de Cadastro */
+#cadastro {
+    padding: 40px 10%;
+    text-align: center;
+}
+
+#cadastro h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+#cadastro form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#cadastro input,
+#cadastro textarea {
+    margin: 10px 0;
+    padding: 10px;
+    width: 300px;
+    font-size: 1.1em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#cadastro button {
+    padding: 10px 20px;
+    font-size: 1.2em;
+    background-color: #ffcc00;
+    color: #111;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#cadastro button:hover {
+    background-color: #e6b800;
+}
+
+/* Toast de Sucesso */
+#toast {
+    display: none;
+    background-color: #4caf50;
+    color: #fff;
+    padding: 10px;
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    border-radius: 5px;
+}
+
+/* Rodapé */
+footer {
+    background: #111;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+}
+
+/* Seção de Upload de Documento */
+#upload {
+    padding: 20px;
+    text-align: center;
+    background: #fff;
+}
+
+#upload input[type="file"] {
+    margin-top: 10px;
+    padding: 10px;
+    width: 300px;
+    font-size: 1em;
+}
