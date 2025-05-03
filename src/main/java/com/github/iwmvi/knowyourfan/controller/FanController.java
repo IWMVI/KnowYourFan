@@ -52,7 +52,7 @@ public class FanController {
         return ResponseEntity.ok("Fã cadastrado(a) com sucesso!");
     }
 
-    private boolean linkEhValido(String url) {
+    public boolean linkEhValido(String url) {
         return url.contains("steam") || url.contains("faceit") || url.contains("hltv");
     }
 
