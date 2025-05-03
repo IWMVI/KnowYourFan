@@ -1,166 +1,110 @@
-/* Estilo Básico */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    color: #333;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #121212;
+  color: #f0f0f0;
 }
 
-a {
-    text-decoration: none;
-    color: #fff;
-}
-
-/* Cabeçalho */
 header {
-    background: #111;
-    color: #fff;
-    padding: 10px 0;
-    text-align: center;
+  background-color: #000;
+  padding: 15px;
 }
 
 nav ul {
-    list-style-type: none;
+  display: flex;
+  list-style: none;
+  justify-content: center;
+  gap: 30px;
+  padding: 0;
 }
 
-nav ul li {
-    display: inline;
-    margin-right: 15px;
+nav a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
 }
 
 #banner {
-    background: url('https://upload.wikimedia.org/wikipedia/pt/f/f9/Furia_Esports_logo.png') no-repeat center center;
-    padding: 60px 0;
-    color: #fff;
-    text-align: center;
-    height: 400px;
-    background-size: contain;
-    background-position: center;
-    position: relative;
+  background-color: #1a1a1a;
+  padding: 60px 20px;
+  text-align: center;
 }
 
-#banner .banner-content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    background-color: rgba(0, 0, 0, 0.5);
-    padding: 20px;
-    border-radius: 10px;
+.banner-content h1 {
+  font-size: 2.5em;
+  margin-bottom: 10px;
 }
 
-#banner h1 {
-    font-size: 3em;
-    margin-bottom: 20px;
+.banner-content p {
+  font-size: 1.2em;
 }
 
-#banner p {
-    font-size: 1.2em;
-    margin-bottom: 30px;
+.btn {
+  display: inline-block;
+  margin-top: 20px;
+  background-color: #e10000;
+  color: white;
+  padding: 12px 24px;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: bold;
 }
 
-#banner .btn {
-    background-color: #ffcc00;
-    padding: 10px 20px;
-    border-radius: 5px;
-    color: #111;
-    font-size: 1.1em;
-}
-
-/* Seção de Informações */
-#info {
-    padding: 40px 10%;
-    background: #f4f4f4;
-    text-align: center;
-}
-
-#info h2 {
-    font-size: 2em;
-    margin-bottom: 20px;
-}
-
-#info p {
-    font-size: 1.1em;
-    margin-bottom: 20px;
-}
-
-/* Formulário de Cadastro */
+#info,
 #cadastro {
-    padding: 40px 10%;
-    text-align: center;
+  padding: 40px 20px;
+  max-width: 600px;
+  margin: auto;
 }
 
-#cadastro h2 {
-    font-size: 2em;
-    margin-bottom: 20px;
+form input,
+form textarea {
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  font-size: 1em;
 }
 
-#cadastro form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+form textarea {
+  height: 100px;
+  resize: vertical;
 }
 
-#cadastro input,
-#cadastro textarea {
-    margin: 10px 0;
-    padding: 10px;
-    width: 300px;
-    font-size: 1.1em;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+button {
+  background-color: #e10000;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  width: 100%;
+  font-size: 1em;
+  font-weight: bold;
+  cursor: pointer;
 }
 
-#cadastro button {
-    padding: 10px 20px;
-    font-size: 1.2em;
-    background-color: #ffcc00;
-    color: #111;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+button:hover {
+  background-color: #b90000;
 }
 
-#cadastro button:hover {
-    background-color: #e6b800;
-}
-
-/* Toast de Sucesso */
-#toast {
-    display: none;
-    background-color: #4caf50;
-    color: #fff;
-    padding: 10px;
-    position: fixed;
-    top: 10px;
-    right: 10px;
-    border-radius: 5px;
-}
-
-/* Rodapé */
 footer {
-    background: #111;
-    color: #fff;
-    padding: 20px 0;
-    text-align: center;
+  background-color: #000;
+  text-align: center;
+  padding: 20px;
+  color: #ccc;
 }
 
-/* Seção de Upload de Documento */
-#upload {
-    padding: 20px;
-    text-align: center;
-    background: #fff;
-}
-
-#upload input[type="file"] {
-    margin-top: 10px;
-    padding: 10px;
-    width: 300px;
-    font-size: 1em;
+#toast {
+  display: none;
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background-color: #4caf50;
+  color: white;
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px #000;
+  z-index: 1000;
+  font-weight: bold;
 }
