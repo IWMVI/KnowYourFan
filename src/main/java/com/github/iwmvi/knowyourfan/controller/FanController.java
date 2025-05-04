@@ -27,8 +27,9 @@ public class FanController {
     @Autowired
     private RestTemplate restTemplate;
 
-    private static final String RECOMENDACAO_API_URL = "http://127.0.0.1:8001/recomendar";
+    private static final String RECOMENDACAO_API_URL = "http://127.0.0.1:8001/recomendar";  // URL do microserviço FastAPI
 
+    // Endpoint para cadastrar fã e obter recomendações
     @PostMapping
     public ResponseEntity<String> signUp(
             @RequestParam("nome") String nome,
@@ -38,12 +39,14 @@ public class FanController {
             @RequestParam(value = "documento", required = false) MultipartFile documento,
             @RequestParam(value = "linksEsports", required = false) List<String> linksEsports) {
 
+        // Criação de um novo fã
         Fan fan = new Fan();
         fan.setNome(nome);
         fan.setCpf(cpf);
         fan.setEndereco(endereco);
         fan.setInteresses(interesses);
 
+        // Processando o arquivo do documento, se fornecido
         if (documento != null && !documento.isEmpty()) {
             try {
                 String documentoPath = "caminho/do/arquivo";
@@ -53,6 +56,7 @@ public class FanController {
             }
         }
 
+        // Validação dos links de e-sports, se fornecidos
         if (linksEsports != null) {
             fan.setLinksEsports(linksEsports);
             boolean algumLinkValido = linksEsports.stream().anyMatch(linkValidationService::validarLink);
@@ -61,9 +65,10 @@ public class FanController {
             }
         }
 
+        // Salvando o fã no banco de dados
         repository.save(fan);
 
-        // Integração com microserviço FastAPI
+        // Integração com microserviço FastAPI para recomendações
         try {
             // Transforma a string "FPS,CSGO" em array JSON válido
             String[] interessesArray = interesses.split(",\\s*");
@@ -75,13 +80,16 @@ public class FanController {
             jsonBuilder.append("]}");
             String json = jsonBuilder.toString();
 
+            // Criando a requisição HTTP para o microserviço
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<String> request = new HttpEntity<>(json, headers);
 
+            // Enviando a requisição para o microserviço e recebendo a resposta
             ResponseEntity<String> response = restTemplate.postForEntity(RECOMENDACAO_API_URL, request, String.class);
             String recomendacoes = response.getBody();
 
+            // Retornando a resposta para o frontend com as recomendações
             return ResponseEntity.ok("Fã cadastrado(a) com sucesso! Recomendações: " + recomendacoes);
         } catch (Exception e) {
             e.printStackTrace(); // log detalhado no console
@@ -89,28 +97,33 @@ public class FanController {
         }
     }
 
+    // Endpoint para listar todos os fãs cadastrados
     @GetMapping
     public ResponseEntity<List<Fan>> listarTodos() {
         return ResponseEntity.ok(repository.findAll());
     }
 
+    // Endpoint para exportar dados dos fãs para um arquivo CSV
     @GetMapping("/exportar")
     public ResponseEntity<String> exportarCSV() {
         List<Fan> fans = repository.findAll();
         StringBuilder csv = new StringBuilder("nome,cpf,interesses\n");
 
+        // Adicionando dados de cada fã ao CSV
         for (Fan fan : fans) {
             csv.append(fan.getNome()).append(",")
                     .append(fan.getCpf()).append(",")
                     .append(fan.getInteresses()).append("\n");
         }
 
+        // Retornando o arquivo CSV para download
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=fans.csv")
                 .contentType(MediaType.TEXT_PLAIN)
                 .body(csv.toString());
     }
 
+    // Função para validar se um link é válido
     public boolean linkEhValido(String url) {
         return linkValidationService.validarLink(url);
     }

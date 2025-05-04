@@ -30,7 +30,7 @@ form.addEventListener("submit", async (e) => {
   formData.append("cpf", payload.cpf);
   formData.append("endereco", payload.endereco);
   formData.append("interesses", payload.interesses);
-  formData.append("documento", document.getElementById("documento").files[0]); // Verifique se o arquivo foi anexado corretamente
+  formData.append("documento", document.getElementById("documento").files[0]); // Verifica se o arquivo foi anexado corretamente
 
   try {
     // Enviando o FormData para o backend
@@ -45,11 +45,11 @@ form.addEventListener("submit", async (e) => {
 
     const msg = await res.text();
     toast.innerText = msg;
-    toast.style.display = "block";
-    setTimeout(() => (toast.style.display = "none"), 5000);
+    toast.style.display = "block";  // Exibindo a toast com a mensagem
+    setTimeout(() => (toast.style.display = "none"), 5000);  // Ocultando após 5 segundos
   } catch (error) {
     toast.innerText = error.message;
-    toast.style.display = "block";
-    setTimeout(() => (toast.style.display = "none"), 5000);
+    toast.style.display = "block";  // Exibindo a toast com a mensagem de erro
+    setTimeout(() => (toast.style.display = "none"), 5000);  // Ocultando após 5 segundos
   }
 });
