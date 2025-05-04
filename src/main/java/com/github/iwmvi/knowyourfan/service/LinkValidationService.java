@@ -1,41 +1,29 @@
 package com.github.iwmvi.knowyourfan.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.iwmvi.knowyourfan.dto.ValidacaoLinkResponse;
-
 import org.springframework.stereotype.Service;
 
 import java.net.URI;
-import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
 
 @Service
 public class LinkValidationService {
 
-    private final HttpClient httpClient = HttpClient.newHttpClient();
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
-    public boolean validarLink(String url) {
+    public boolean validarLink(String urlPerfil) {
         try {
-            String endpoint = "http://localhost:8000/validar-link?url=" +
-                    URLEncoder.encode(url, StandardCharsets.UTF_8);
+            HttpClient client = HttpClient.newHttpClient();
+            String endpoint = "http://localhost:8000/validar-link?url=" + urlPerfil;
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(endpoint))
                     .GET()
                     .build();
 
-            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-            ValidacaoLinkResponse resultado = objectMapper.readValue(response.body(), ValidacaoLinkResponse.class);
-
-            return resultado.isValido();
-
+            return response.body().contains("true");
         } catch (Exception e) {
-            e.printStackTrace();
             return false;
         }
     }

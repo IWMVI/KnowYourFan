@@ -4,8 +4,12 @@ import com.github.iwmvi.knowyourfan.entity.Fan;
 import com.github.iwmvi.knowyourfan.repository.FanRepository;
 import com.github.iwmvi.knowyourfan.service.LinkValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -19,6 +23,11 @@ public class FanController {
 
     @Autowired
     private LinkValidationService linkValidationService;
+
+    @Autowired
+    private RestTemplate restTemplate;
+
+    private static final String RECOMENDACAO_API_URL = "http://127.0.0.1:8001/recomendar";
 
     @PostMapping
     public ResponseEntity<String> signUp(
@@ -53,11 +62,56 @@ public class FanController {
         }
 
         repository.save(fan);
-        return ResponseEntity.ok("Fã cadastrado(a) com sucesso!");
+
+        // Integração com microserviço FastAPI
+        try {
+            // Transforma a string "FPS,CSGO" em array JSON válido
+            String[] interessesArray = interesses.split(",\\s*");
+            StringBuilder jsonBuilder = new StringBuilder("{\"interesses\": [");
+            for (int i = 0; i < interessesArray.length; i++) {
+                jsonBuilder.append("\"").append(interessesArray[i]).append("\"");
+                if (i < interessesArray.length - 1) jsonBuilder.append(",");
+            }
+            jsonBuilder.append("]}");
+            String json = jsonBuilder.toString();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            HttpEntity<String> request = new HttpEntity<>(json, headers);
+
+            ResponseEntity<String> response = restTemplate.postForEntity(RECOMENDACAO_API_URL, request, String.class);
+            String recomendacoes = response.getBody();
+
+            return ResponseEntity.ok("Fã cadastrado(a) com sucesso! Recomendações: " + recomendacoes);
+        } catch (Exception e) {
+            e.printStackTrace(); // log detalhado no console
+            return ResponseEntity.status(500).body("Fã cadastrado(a), mas falha ao obter recomendações: " + e.getMessage());
+        }
     }
 
     @GetMapping
     public ResponseEntity<List<Fan>> listarTodos() {
         return ResponseEntity.ok(repository.findAll());
+    }
+
+    @GetMapping("/exportar")
+    public ResponseEntity<String> exportarCSV() {
+        List<Fan> fans = repository.findAll();
+        StringBuilder csv = new StringBuilder("nome,cpf,interesses\n");
+
+        for (Fan fan : fans) {
+            csv.append(fan.getNome()).append(",")
+                    .append(fan.getCpf()).append(",")
+                    .append(fan.getInteresses()).append("\n");
+        }
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=fans.csv")
+                .contentType(MediaType.TEXT_PLAIN)
+                .body(csv.toString());
+    }
+
+    public boolean linkEhValido(String url) {
+        return linkValidationService.validarLink(url);
     }
 }
