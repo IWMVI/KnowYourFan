@@ -8,15 +8,19 @@ O projeto **Know Your Fan** tem como objetivo criar uma solução interativa que
 - Upload de **documentos** para validação da identidade do fã.
 - Integração com **links de perfis em sites de e-sports** como Steam, Faceit, e outros.
 - Validação de documentos e perfis de e-sports com **IA** (a ser implementado).
-- Interface para **administração** dos dados coletados.
+- **Recomendações personalizadas** de jogos baseadas nos interesses do fã, utilizando um microserviço Python.
+- Interface para **administração** dos dados coletados, com opções de exportação de dados para **CSV**.
+- **Autenticação e controle de validação** para administradores.
 
 ## Tecnologias Utilizadas
 
 - **Frontend**: HTML, CSS, JavaScript (Vanilla), FormData, Fetch API
 - **Backend**: Java com Spring Boot
-- **Banco de Dados**: H2 (para MVP), pode ser expandido para outros como MySQL ou PostgreSQL
+- **Banco de Dados**: H2 (para MVP)
+- **Microserviço de Recomendações**: Python com FastAPI
 - **Validação de Documentos**: (Futura implementação) - Uso de **OCR** para validar os documentos enviados
 - **Integração com e-sports**: A validação dos links será feita com IA (a ser implementado)
+- **Integração com APIs de recomendação**: Recomendação de jogos com base em interesses usando microserviço FastAPI
 
 ---
 
@@ -28,6 +32,9 @@ Certifique-se de ter as seguintes ferramentas instaladas:
 
 - [Java 17+](https://adoptopenjdk.net/)
 - [Maven](https://maven.apache.org/)
+- [Python 3.7+](https://www.python.org/)
+- [FastAPI](https://fastapi.tiangolo.com/)
+- [Uvicorn](https://www.uvicorn.org/)
 - [IDE como IntelliJ ou Eclipse](https://www.jetbrains.com/idea/) para desenvolvimento
 
 ### 2. **Clone o repositório**
