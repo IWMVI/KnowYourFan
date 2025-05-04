@@ -2,6 +2,7 @@ package com.github.iwmvi.knowyourfan.controller;
 
 import com.github.iwmvi.knowyourfan.entity.Fan;
 import com.github.iwmvi.knowyourfan.repository.FanRepository;
+import com.github.iwmvi.knowyourfan.service.LinkValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,9 @@ public class FanController {
     @Autowired
     private FanRepository repository;
 
+    @Autowired
+    private LinkValidationService linkValidationService;
+
     @PostMapping
     public ResponseEntity<String> signUp(
             @RequestParam("nome") String nome,
@@ -24,6 +28,7 @@ public class FanController {
             @RequestParam("interesses") String interesses,
             @RequestParam(value = "documento", required = false) MultipartFile documento,
             @RequestParam(value = "linksEsports", required = false) List<String> linksEsports) {
+
         Fan fan = new Fan();
         fan.setNome(nome);
         fan.setCpf(cpf);
@@ -39,10 +44,9 @@ public class FanController {
             }
         }
 
-        // Validação simulada com IA para links de e-sports
         if (linksEsports != null) {
             fan.setLinksEsports(linksEsports);
-            boolean algumLinkValido = linksEsports.stream().anyMatch(this::linkEhValido);
+            boolean algumLinkValido = linksEsports.stream().anyMatch(linkValidationService::validarLink);
             if (!algumLinkValido) {
                 return ResponseEntity.badRequest().body("Nenhum link de e-sports válido foi fornecido.");
             }
@@ -50,10 +54,6 @@ public class FanController {
 
         repository.save(fan);
         return ResponseEntity.ok("Fã cadastrado(a) com sucesso!");
-    }
-
-    public boolean linkEhValido(String url) {
-        return url.contains("steam") || url.contains("faceit") || url.contains("hltv");
     }
 
     @GetMapping
